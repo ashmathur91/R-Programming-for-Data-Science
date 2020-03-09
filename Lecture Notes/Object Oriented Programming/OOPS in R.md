@@ -138,8 +138,10 @@ NorthAmerican <- function(eatsBreakfast=TRUE,myFavorite="cereal")
         class(me) <- append(class(me),"NorthAmerican")
         return(me)
 }
+```
 Once this definition is executed a new function is defined, called NorthAmerican. A new object of this class can be created by calling the function.
 
+```
 > bubba <- NorthAmerican()
 > bubba
 $hasBreakfast
@@ -163,13 +165,15 @@ $favoriteBreakfast
 
 attr(,"class")
 [1] "list"          "NorthAmerican"
-16.1.3.2. Local Environment Approach
+```
+### 3.2 Local Environment Approach
+
 Another approach can be employed that makes use of the local environment within a function to access the variables. When we define methods with this approach later, Local Environment Approach, the results will look more like object oriented approaches seen in other languages.
 
 The approach relies on the local scope created when a function is called. A new environment is created that can be identified using the environment command. The environment can be saved in the list created for the class, and the variables within this scope can then be accessed using the identification of the environment.
 
 In the example below this approach appears to require more overhead. When we examine how to add external methods to the class the advantage will be a little clearer.
-
+```
 NordAmericain <- function(eatsBreakfast=TRUE,myFavorite="cereal")
 {
 
