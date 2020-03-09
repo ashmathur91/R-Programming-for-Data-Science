@@ -10,7 +10,7 @@ The first argument is the collection of elements that R will arrange into the ro
 The argument byrow indicates that the matrix is filled by the rows. If we want the matrix to be filled by the columns, we just place byrow = FALSE.
 The third argument nrow indicates that the matrix should have three rows.
 
-# Script.R
+## Complete the Script.R
 ```
 # Construct a matrix with 3 rows that contain the numbers 1 up to 9
 
@@ -30,7 +30,7 @@ In this exercise, you'll combine all these figures into a single vector. Next, y
 Use c(new_hope, empire_strikes, return_jedi) to combine the three vectors into one vector. Call this vector box_office.
 Construct a matrix with 3 rows, where each row represents a movie. Use the matrix() function to do this. The first argument is the vector box_office, containing all box office figures. Next, you'll have to specify nrow = 3 and byrow = TRUE. Name the resulting matrix star_wars_matrix.
 
-# Script.R
+## Script.R
 ```
 # Box office Star Wars (in millions!)
 new_hope <- c(460.998, 314.4)
@@ -63,7 +63,7 @@ Use rownames() to name the rows of star_wars_matrix with the titles vector.
 Print out star_wars_matrix to see the result of your work.
 
 
-# Script.R 
+## Complete the Script.R 
 ```
 # Box office Star Wars (in millions!)
 new_hope <- c(460.998, 314.4)
