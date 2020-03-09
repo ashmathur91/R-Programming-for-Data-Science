@@ -107,18 +107,25 @@ character(0)
 > get("bubba",e)
 [1] 3
 ```
-Environments can be created and embedded within other environments and can be structured to form a hierarchy. There are a number of commands to help you move through different environments. You can find more details using the command help(environment), but we do not pursue more details because this is as much as we need for our purposes of using S3 classes.
+Environments can be created and embedded within other environments and can be structured to form a hierarchy. 
 
-16.1.3. Creating an S3 Class
-The basic ideas associated with S3 classes is discussed in the first section (The Basic Idea). We now expand on that idea and demonstrate how to define a function that will create and return an object of a given class. The basic idea is that a list is created with the relevant members, the list’s class is set, and a copy of the list is returned.
+## 3. Creating an S3 Class
 
-Here we examine two different ways to construct an S3 class. The first approach is more commonly used and is more straightforward. It makes use of basic list properties. The second approach makes use of the local environment within a function to define the variables tracked by the class. The advantage to the second approach is that it looks more like the object oriented approach that many are familiar with. The disadvantage is that it is more difficult to read the code, and it is more like working with pointers which is different from the way other objects work in R.
+The basic ideas associated with S3 classes is discussed in the first section (The Basic Idea). We now expand on that idea and **demonstrate how to define a function that will create and return an object of a given class**. The basic idea is that a **list is created with the relevant members, the list’s class is set, and a copy of the list is returned**.
 
-16.1.3.1. Straight Forward Approach
+### Here we examine two different ways to construct an S3 class. 
+* The first approach is more commonly used and is more straightforward. It makes use of basic list properties. 
+* The second approach makes use of the local environment within a function to define the variables tracked by the class. 
+
+The advantage to the second approach is that **it looks more like the object oriented approach** that many are familiar with. The **disadvantage is that it is more difficult to read the code**, and it is more like working with pointers which is different from the way other objects work in R.
+
+#### 3.1. Straight Forward Approach
 The first approach is the more standard approach most often seen with S3 classes. It makes use of the methods defined outside of the class which is described below, Creating Methods. It also keeps track of the data maintained by the class using the standard practices associated with lists.
 
-The basic idea is that a function is defined which creates a list. The data entries tracked by the class are defined in the list. In the example below the defaults are specified in the argument list with default values assigned. A new class name is appended to the list’s classes, and the list is returned.
+The basic idea is that a **function is defined which creates a list**. The data entries tracked by the class are defined in the list. 
 
+* In the example below the defaults are specified in the argument list with default values assigned. A new class name is appended to the list’s classes, and the list is returned.
+```
 NorthAmerican <- function(eatsBreakfast=TRUE,myFavorite="cereal")
 {
 
@@ -215,4 +222,6 @@ Note that there is an unfortunate side effect to this approach. By keeping track
 [1] "toast"
 > get("favoriteBreakfast",bubba$getEnv())
 [1] "toast"
+```
+
 This issue will be explored again in the subsection below detailing how to create methods for an S3 class. If you wish to be able to copy an object using this approach you need to create a new method to return a proper copy.
