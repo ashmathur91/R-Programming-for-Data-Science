@@ -24,9 +24,106 @@ c <- a + b
 ```
 A_vector <- c(1, 2, 3)
 B_vector <- c(4, 5, 6)
-
+```
 # Take the sum of A_vector and B_vector
 total_vector <- 
   
 # Print out total_vector
+
+-------------------------------------------------------------------------------------------------------------------
+# Poker and roulette winnings from Monday to Friday:
+poker_vector <- c(140, -50, 20, -120, 240)
+roulette_vector <- c(-24, -50, 100, -350, 10)
+days_vector <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+names(poker_vector) <- days_vector
+names(roulette_vector) <- days_vector
 ```
+# Assign to total_daily how much you won/lost on each day
+total_daily <- 
+```
+---------------------------------------------------------------------------------------------------------------------
+# Poker and roulette winnings from Monday to Friday:
+poker_vector <- c(140, -50, 20, -120, 240)
+roulette_vector <- c(-24, -50, 100, -350, 10)
+days_vector <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+names(poker_vector) <- days_vector
+names(roulette_vector) <- days_vector
+```
+# Total winnings with poker
+total_poker <- sum(poker_vector)
+```
+# Total winnings with roulette
+
+------------------------------------------------------------------------------------------------------------------------
+# Poker and roulette winnings from Monday to Friday:
+poker_vector <- c(140, -50, 20, -120, 240)
+roulette_vector <- c(-24, -50, 100, -350, 10)
+days_vector <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+names(poker_vector) <- days_vector
+names(roulette_vector) <- days_vector
+```
+# Calculate total gains for poker and roulette
+total_poker <-
+total_roulette <-
+```
+------------------------------------------------------------------------------------------------------------------------
+## Selection by comparison - Step 1
+By making use of comparison operators, we can approach the previous question in a more proactive way.
+
+The (logical) comparison operators known to R are:
+
+< for less than
+> for greater than
+<= for less than or equal to
+>= for greater than or equal to
+== for equal to each other
+!= not equal to each other
+As seen in the previous chapter, stating 6 > 5 returns TRUE. The nice thing about R is that you can use these comparison operators also on vectors. For example:
+
+> c(4, 5, 6) > 5
+[1] FALSE FALSE TRUE
+This command tests for every element of the vector if the condition stated by the comparison operator is TRUE or FALSE.
+```
+# Poker and roulette winnings from Monday to Friday:
+poker_vector <- c(140, -50, 20, -120, 240)
+roulette_vector <- c(-24, -50, 100, -350, 10)
+days_vector <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+names(poker_vector) <- days_vector
+names(roulette_vector) <- days_vector
+
+# Which days did you make money on poker?
+selection_vector <- 
+```
+
+```# Poker and roulette winnings from Monday to Friday:
+poker_vector <- c(140, -50, 20, -120, 240)
+roulette_vector <- c(-24, -50, 100, -350, 10)
+days_vector <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+names(poker_vector) <- days_vector
+names(roulette_vector) <- days_vector
+
+# Which days did you make money on poker?
+selection_vector <- poker_vector > 0
+```
+
+------------------------------------------------------------------------------------------------------------------------
+# Little Advance Problem 
+
+### Create the variable selection_vector, this time to see if you made profit with roulette for different days.
+
+### Assign the amounts that you made on the days that you ended positively for roulette to the variable roulette_winning_days. 
+
+This vector thus contains the positive winnings of roulette_vector.
+```
+# Name poker and roulette
+days_vector = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+names(roulette_vector) = days_vector
+names(poker_vector) = days_vector
+
+# What days of the week did you make money on roulette
+
+# Select from roulette_vector these days
+
+```
+
+
