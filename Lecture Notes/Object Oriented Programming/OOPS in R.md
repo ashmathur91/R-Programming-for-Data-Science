@@ -229,3 +229,345 @@ Note that there is an unfortunate side effect to this approach. By keeping track
 ```
 
 This issue will be explored again in the subsection below detailing how to create methods for an S3 class. If you wish to be able to copy an object using this approach you need to create a new method to return a proper copy.
+
+********
+
+### 4. Creating Methods
+
+Now explore **how to create methods associated with a class**. Again we break it up into two parts. 
+* The first approach is used for both approaches discussed in the previous section.
+
+#### 4.1. Straight Forward Approach
+The first approach is to define a function that exists outside of the class. The function is defined in a generic way, and then a function specific to a given class is defined. The R environment then decides which function to use based on the class names of an argument to the function, and the suffix used in the names of the associated functions.
+
+One thing to keep in mind is that for ** assignment R makes copies of objects**. The implication is that if you change a part of an object you need to return an exact copy of the object. Otherwise your changes may be lost.
+
+In the examples below we define accessors for the variables in the class defined above. We assume that the class NorthAmerican is defined in the same way as the first example above, Straightforward Class. In the first example the goal is that we want to create a function that will set the value of hasBreakfast for a given object. The name of the function will be setHasBreakfast.
+
+The first step is to reserve the name of the function, and use the UseMethod command to tell R to search for the correct function. If we pass an object whose class includes the name NorthAmerican then the correct function to call should be called setHasBreakfast.NorthAmerican. Note that we will also create a function called setHasBreakfast.default. This function will be called if R cannot find another function of the correct class.
+
+```
+setHasBreakfast <- function(elObjeto, newValue)
+        {
+                print("Calling the base setHasBreakfast function")
+                UseMethod("setHasBreakfast",elObjeto)
+                print("Note this is not executed!")
+        }
+
+setHasBreakfast.default <- function(elObjeto, newValue)
+        {
+                print("You screwed up. I do not know how to handle this object.")
+                return(elObjeto)
+        }
+
+
+setHasBreakfast.NorthAmerican <- function(elObjeto, newValue)
+        {
+                print("In setHasBreakfast.NorthAmerican and setting the value")
+                elObjeto$hasBreakfast <- newValue
+                return(elObjeto)
+        }
+```
+The first thing to note is that the function returns a copy of the object passed to it. R passes copies of objects to functions. If you change an object within a function it does not change the original object. You must pass back a copy of the updated object.
+```
+> bubba <- NorthAmerican()
+> bubba$hasBreakfast
+[1] TRUE
+> bubba <- setHasBreakfast(bubba,FALSE)
+[1] "Calling the base setHasBreakfast function"
+[1] "In setHasBreakfast.NorthAmerican and setting the value"
+> bubba$hasBreakfast
+[1] FALSE
+> bubba <- setHasBreakfast(bubba,"No type checking sucker!")
+[1] "Calling the base setHasBreakfast function"
+[1] "In setHasBreakfast.NorthAmerican and setting the value"
+> bubba$hasBreakfast
+[1] "No type checking sucker!"
+If the correct function cannot be found then the default version of the function is called.
+
+> someNumbers <- 1:4
+> someNumbers
+[1] 1 2 3 4
+> someNumbers <- setHasBreakfast(someNumbers,"what?")
+[1] "Calling the base setHasBreakfast function"
+[1] "You screwed up. I do not know how to handle this object."
+> someNumbers
+[1] 1 2 3 4
+It is a good practice to only use predefined accessors to get and set values held by an object. As a matter of completeness we define methods to get the value of the hasBreakfast field.
+
+getHasBreakfast <- function(elObjeto)
+        {
+                print("Calling the base getHasBreakfast function")
+                UseMethod("getHasBreakfast",elObjeto)
+                print("Note this is not executed!")
+        }
+
+getHasBreakfast.default <- function(elObjeto)
+        {
+                print("You screwed up. I do not know how to handle this object.")
+                return(NULL)
+        }
+
+
+getHasBreakfast.NorthAmerican <- function(elObjeto)
+        {
+                print("In getHasBreakfast.NorthAmerican and returning the value")
+                return(elObjeto$hasBreakfast)
+        }
+The functions to get the values are used in the same way.
+
+> bubba <- NorthAmerican()
+> bubba <- setHasBreakfast(bubba,"No type checking sucker!")
+[1] "Calling the base setHasBreakfast function"
+[1] "In setHasBreakfast.NorthAmerican and setting the value"
+> result <- getHasBreakfast(bubba)
+[1] "Calling the base getHasBreakfast function"
+[1] "In getHasBreakfast.NorthAmerican and returning the value"
+> result
+```
+[1] "No type checking !"
+
+#### 4.2. Local Environment Approach
+If the second method for defining an S3 class is used as seen above, Local Environment Class, then the approach for defining a method can include an additional way to define a method. In this approach functions can be defined within the list that defines the object.
+```
+NordAmericain <- function(eatsBreakfast=TRUE,myFavorite="cereal")
+{
+
+      ## Get the environment for this
+      ## instance of the function.
+      thisEnv <- environment()
+
+      hasBreakfast <- eatsBreakfast
+      favoriteBreakfast <- myFavorite
+
+      ## Create the list used to represent an
+      ## object for this class
+      me <- list(
+
+              ## Define the environment where this list is defined so
+              ## that I can refer to it later.
+              thisEnv = thisEnv,
+
+              ## Define the accessors for the data fields.
+              getEnv = function()
+              {
+                      return(get("thisEnv",thisEnv))
+              },
+
+              getHasBreakfast = function()
+              {
+                      return(get("hasBreakfast",thisEnv))
+              },
+
+              setHasBreakfast = function(value)
+              {
+                      return(assign("hasBreakfast",value,thisEnv))
+              },
+
+
+              getFavoriteBreakfast = function()
+              {
+                      return(get("favoriteBreakfast",thisEnv))
+              },
+
+              setFavoriteBreakfast = function(value)
+              {
+                      return(assign("favoriteBreakfast",value,thisEnv))
+              }
+
+        )
+
+      ## Define the value of the list within the current environment.
+      assign('this',me,envir=thisEnv)
+
+      ## Set the name for the class
+      class(me) <- append(class(me),"NordAmericain")
+      return(me)
+}
+With this definition the methods can be called in a more direct manner.
+
+> bubba <- NordAmericain(myFavorite="oatmeal")
+> bubba$getFavoriteBreakfast()
+[1] "oatmeal"
+> bubba$setFavoriteBreakfast("plain toast")
+> bubba$getFavoriteBreakfast()
+[1] "plain toast"
+```
+As noted above, Local Environment Class, this approach can be problematic when making a copy of an object. If you need to make copies of your objects a function must be defined to explicitly make a copy.
+```
+makeCopy <- function(elObjeto)
+        {
+                print("Calling the base makeCopy function")
+                UseMethod("makeCopy",elObjeto)
+                print("Note this is not executed!")
+        }
+
+makeCopy.default <- function(elObjeto)
+        {
+                print("You screwed up. I do not know how to handle this object.")
+                return(elObjeto)
+        }
+
+
+makeCopy.NordAmericain <- function(elObjeto)
+        {
+                print("In makeCopy.NordAmericain and making a copy")
+                newObject <- NordAmericain(
+                        eatsBreakfast=elObjeto$getHasBreakfast(),
+                        myFavorite=elObjeto$getFavoriteBreakfast())
+                return(newObject)
+        }
+With this definition we can now make a proper copy of the object and get the expected results.
+
+> bubba <- NordAmericain(eatsBreakfast=FALSE,myFavorite="oatmeal")
+> louise <- makeCopy(bubba)
+[1] "Calling the base makeCopy function"
+[1] "In makeCopy.NordAmericain and making a copy"
+> louise$getFavoriteBreakfast()
+[1] "oatmeal"
+> louise$setFavoriteBreakfast("eggs")
+> louise$getFavoriteBreakfast()
+[1] "eggs"
+> bubba$getFavoriteBreakfast()
+[1] "oatmeal"
+```
+## 5. Inheritance
+Inheritance is part of what makes it worthwhile to go to the effort of making up a proper class. The basic idea is that another class can be constructed that makes use of all the data and methods of a base class and builds on them by adding additional data and methods.
+
+The basic idea is that an object’s class is a vector that contains an ordered list of classes that an object is a member of. When a new object is created it can add its class name to that list. The methods associated with the class can use the NextMethod command to search for the function associated with the next class in the list.
+
+In the examples below we build on the example of the NorthAmerican class defined above. The examples below assume that the NorthAmerican class given above is defined, and the class hierarchy is shown in Figure 1..
+
+Diagram of the NorthAmerican derived classes.
+Figure 1.
+
+Diagram of the NorthAmerican derived classes.
+A file with the full script is available at s3Inheritance.R . We do not provide the full code set here in order to keep the discussion somewhat under control. Our first step is to define the new classes.
+```
+Mexican <- function(eatsBreakfast=TRUE,myFavorite="los huevos")
+{
+
+        me <- NorthAmerican(eatsBreakfast,myFavorite)
+
+        ## Add the name for the class
+        class(me) <- append(class(me),"Mexican")
+        return(me)
+}
+
+
+USAsian <- function(eatsBreakfast=TRUE,myFavorite="pork belly")
+{
+
+        me <- NorthAmerican(eatsBreakfast,myFavorite)
+
+        ## Add the name for the class
+        class(me) <- append(class(me),"USAsian")
+        return(me)
+}
+
+Canadian <- function(eatsBreakfast=TRUE,myFavorite="back bacon")
+{
+
+        me <- NorthAmerican(eatsBreakfast,myFavorite)
+
+        ## Add the name for the class
+        class(me) <- append(class(me),"Canadian")
+        return(me)
+}
+
+Anglophone <- function(eatsBreakfast=TRUE,myFavorite="pancakes")
+{
+
+        me <- Canadian(eatsBreakfast,myFavorite)
+
+        ## Add the name for the class
+        class(me) <- append(class(me),"Anglophone")
+        return(me)
+}
+
+Francophone <- function(eatsBreakfast=TRUE,myFavorite="crepes")
+{
+
+        me <- Canadian(eatsBreakfast,myFavorite)
+
+        ## Add the name for the class
+        class(me) <- append(class(me),"Francophone")
+        return(me)
+}
+```
+With these definitions we can define an object. In this case we create an object from the Francophone class.
+```
+> francois <- Francophone()
+> francois
+$hasBreakfast
+[1] TRUE
+
+$favoriteBreakfast
+[1] "crepes"
+
+attr(,"class")
+[1] "list"          "NorthAmerican" "Canadian"      "Francophone"
+```
+The thing to notice is that the class vector demonstrates the class inheritance structure. We can now define a method, makeBreakfast which will make use of the class structure.
+```
+makeBreakfast <- function(theObject)
+        {
+                print("Calling the base makeBreakfast function")
+                UseMethod("makeBreakfast",theObject)
+        }
+
+makeBreakfast.default <- function(theObject)
+        {
+                print(noquote(paste("Well, this is awkward. Just make",
+                                  getFavoriteBreakfast(theObject))))
+                return(theObject)
+        }
+
+makeBreakfast.Mexican <- function(theObject)
+        {
+                print(noquote(paste("Estoy cocinando",
+                                       getFavoriteBreakfast(theObject))))
+                NextMethod("makeBreakfast",theObject)
+                return(theObject)
+        }
+
+makeBreakfast.USAsian <- function(theObject)
+        {
+                print(noquote(paste("Leave me alone I am making",
+                                               getFavoriteBreakfast(theObject))))
+                NextMethod("makeBreakfast",theObject)
+                return(theObject)
+        }
+
+makeBreakfast.Canadian <- function(theObject)
+        {
+                print(noquote(paste("Good morning, how would you like",
+                                       getFavoriteBreakfast(theObject))))
+                NextMethod("makeBreakfast",theObject)
+                return(theObject)
+        }
+
+makeBreakfast.Anglophone <- function(theObject)
+        {
+                print(noquote(paste("I hope it is okay that I am making",
+                                       getFavoriteBreakfast(theObject))))
+                NextMethod("makeBreakfast",theObject)
+                return(theObject)
+        }
+
+makeBreakfast.Francophone <- function(theObject)
+        {
+                print(noquote(paste("Je cuisine",
+                                       getFavoriteBreakfast(theObject))))
+                NextMethod("makeBreakfast",theObject)
+                return(theObject)
+        }
+```
+**Note** that the functions call the NextMethod function to call the next function in the list of classes.
+```
+> francois <- makeBreakfast(francois)
+[1] "Calling the base makeBreakfast function"
+[1] Good morning, how would you like crepes
+[1] Je cuisine crepes
+[1] Well, this is awkward. Just make crepes
+```
