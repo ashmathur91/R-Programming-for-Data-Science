@@ -1,4 +1,4 @@
-# Reference Link for Object Oriented Programming in R S3 Class : https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=video&cd=1&cad=rja&uact=8&ved=0ahUKEwiZsLXCzJ7oAhWxyDgGHexGAjAQuAIILzAA&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DKete306Oakc&usg=AOvVaw1qJlqgNUN565U-NpDj84Pw
+# Reference Link for Object Oriented Programming in R - S3 Classes : https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=video&cd=1&cad=rja&uact=8&ved=0ahUKEwiZsLXCzJ7oAhWxyDgGHexGAjAQuAIILzAA&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DKete306Oakc&usg=AOvVaw1qJlqgNUN565U-NpDj84Pw
 ----------------------------------------------------------------------------------------------------------------------------
 # S3 Class/Methods for Polygons
 
