@@ -6,7 +6,6 @@ R as a programming language:
 * Start with the basic building blocks of R like data types and low-level details
 * Writing and formulating R scripts: control structures and functions
 
-Packages for visualization and machine learning will be covered in other sections of the R concentration.
 
 Overview and History of R
 =======================
@@ -87,72 +86,7 @@ Available from [CRAN](http://cran.r-project.org):
 * R data import/export
 * R installation and admin (mostly for building R from source)
 * R internals (not for the faint of heart)
-
-
-Getting Help
-===============
-
-Finding Answers
----------------
-
-* Search the archives of the forum before you post
-* Search the web
-* Read the manual
-* Read the FAQ
-* inspection or experimentation
-* Ask a skilled friend
-* Read the source code (if you're a programmer)
-
-Asking Questions
-----------------
-
-* It's important to let other people know you've done due diligence
-* What steps will reproduce the problem?
-* What is the expected output?
-* What did you see instead?
-* What version of the product?
-* What OS?
-* Additional information
-
-Example
--------
-
-### Error Messages
-
-	> library(datasets)
-	> data(airquality)
-	> cor(airquality)
-
-	Error in cor(airquality) : missing observations in cov/cor
-	
-### Google is your Friend
-
-Google: "missing observations in cov/cor"
-
-Subject Headers
----------------
-
-* Stupid: "Help! can't fit linear model!"
-* Smart: "R 3.0.2 lm() function produces seg fault with large data frame, Mac OSX 10.9.1"
-* Smart: "R 3.0.2 lm() function on Mac OSX 10.9.1 -- segfault on large data frame"
-
-Do These
---------
-
-* Describe the goal, not the step
-* Be explicit about your question
-* Do provide the minimum amount of info necessary
-* Be courteous
-* Follow up with the solution (if found)
-
-Don't Do These
---------------
-
-* Claim you've found a bug
-* Grovel as a substitute for doing your homework
-* Post homework questions on mailing lists
-* Email multiple emailing lists at once
-* Ask others to debug your code without giving a hist as to what sort of problem they should be searching for
+------------------------------------------------------------------------------------------------------------
 
 Data Types - Part 1
 ===================
@@ -221,6 +155,10 @@ Printing
 	[1] 1 2 3 4 5
 
 The : operator is used to create integer sequences.
+
+
+------------------------------------------------------------------------------------------------------------
+
 Data Types - Part 2
 ===================
 
@@ -349,6 +287,8 @@ Lists are a special type of vector that can contain elements of different classe
 	
 	[[4]]
 	[1] 1+4i
+
+------------------------------------------------------------------------------------------------------------
 
 Data Types - Part 3
 ===================
@@ -480,6 +420,8 @@ Summary
 * data frames
 * names
 
+---------------------------------------------------------------------------------------------------------------
+
 Subsetting - Part 1
 ===================
 
@@ -542,7 +484,9 @@ Similarly, subsetting a single column or a single row will give you a vector, no
 	     [,1] [,2] [,3]
 	[1,]    1    3    5
   
-  Subsetting - Part 2
+---------------------------------------------------------------------------------------------------------------
+
+Subsetting - Part 2
 ===================
 
 Subsetting Lists
@@ -642,7 +586,7 @@ You can use the complete.cases() function on data frames.
 	> hw1 = read.csv('hw1_data.csv')
 	> good <- complete.cases(hw1)
 	> hw1[good,]
-
+--------------------------------------------------------------------------------------------------------------
 Reading and Writing Data - Part 1
 =================================
 
@@ -729,6 +673,8 @@ I have a data frame with 1,500,000 rows and 120 columns, all of which are numeri
 = 1.34 GB
 
 You will need roughly double the memory to read data into R because of the overhead.
+
+--------------------------------------------------------------------------------------------------------------
 
 Read and Write Data - Part 2
 ============================
